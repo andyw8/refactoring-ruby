@@ -7,10 +7,7 @@ def statement(invoice, plays)
   format = Intl::NumberFormat.new("en-US",
                                   style: "currency", currency: "USD",
                                   minimum_fraction_digits: 2).format
-  invoice["performances"].each do |perf|
-    play = plays[perf["playID"]]
-    this_amount = 0
-
+  amount_for = lambda do |perf, play|
     case play["type"]
     when "tragedy"
       this_amount = 40_000
@@ -26,6 +23,12 @@ def statement(invoice, plays)
     else
       raise "unknown type: #{play["type"]}"
     end
+    this_amount
+  end
+
+  invoice["performances"].each do |perf|
+    play = plays[perf["playID"]]
+    this_amount = amount_for.call(perf, play)
 
     # add volume credits
     volume_credits += [perf["audience"] - 30, 0].max
