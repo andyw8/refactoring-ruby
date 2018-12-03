@@ -8,6 +8,9 @@ equivalent.
 In Ruby it's not possible directly assign a method to a variable, so I used a
 lambda instead.
 
+To prevent a name clash for `result`, I made use of a block-local variable,
+`lambda do |perf, play; result|`.
+
 I renamed the variables to use `snake_case` rather than `camelCase`.
 
 # Testing
