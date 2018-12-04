@@ -7,8 +7,13 @@ def statement(invoice, plays)
   format = Intl::NumberFormat.new("en-US",
                                   style: "currency", currency: "USD",
                                   minimum_fraction_digits: 2).format
-  amount_for = lambda do |a_performance, play; result|
-    case play["type"]
+
+  play_for = lambda do |a_performance|
+    plays[a_performance["playID"]]
+  end
+
+  amount_for = lambda do |a_performance; result|
+    case play_for.call(a_performance)["type"]
     when "tragedy"
       result = 40_000
       if a_performance["audience"] > 30
@@ -26,12 +31,8 @@ def statement(invoice, plays)
     result
   end
 
-  play_for = lambda do |a_performance|
-    plays[a_performance["playID"]]
-  end
-
   invoice["performances"].each do |a_performance|
-    this_amount = amount_for.call(a_performance, play_for.call(a_performance))
+    this_amount = amount_for.call(a_performance)
 
     # add volume credits
     volume_credits += [a_performance["audience"] - 30, 0].max
