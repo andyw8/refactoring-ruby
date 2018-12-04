@@ -1,4 +1,8 @@
-This repo contains examples from Refactoring (2nd edition) converted to Ruby.
+This repo contains examples from Chapter 1 of Refactoring (2nd edition),
+converted to Ruby.
+
+You can view the commits individually to see each change. Some commits
+have an corresponding explanation for Ruby-specific implementation details.
 
 A few small changes were needed:
 
@@ -20,6 +24,10 @@ want more tests in place before I started to refactor.
 
 # Style
 
-I'm aiming to follow Ruby Community Style, and I'm using RuboCop to validate
-it. I disabled some rules which don't make sense considering this is an exercise
-rather than real code.
+I'm generally aiming to follow Ruby Community Style, and I'm using RuboCop to
+validate it. I disabled some rules which don't make sense considering this is an
+exercise rather than real code.
+
+The book uses nested functions, which aren't available in Ruby, but can be
+approximated using lambdas.
+
