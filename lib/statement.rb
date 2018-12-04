@@ -4,9 +4,6 @@ def statement(invoice, plays)
   total_amount = 0
   volume_credits = 0
   result = "Statement for #{invoice["customer"]}\n"
-  format = Intl::NumberFormat.new("en-US",
-                                  style: "currency", currency: "USD",
-                                  minimum_fraction_digits: 2).format
 
   play_for = lambda do |a_performance|
     plays[a_performance["playID"]]
@@ -40,14 +37,20 @@ def statement(invoice, plays)
     volume_credits
   end
 
+  usd = lambda do |a_number|
+    Intl::NumberFormat.new("en-US",
+                           style: "currency", currency: "USD",
+                           minimum_fraction_digits: 2).format.call(a_number / 100)
+  end
+
   invoice["performances"].each do |a_performance|
     volume_credits += volume_credits_for.call(a_performance)
 
     # print line for this order
-    result += "  #{play_for.call(a_performance)["name"]}: #{format.call(amount_for.call(a_performance) / 100)} (#{a_performance["audience"]} seats)\n"
+    result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
     total_amount += amount_for.call(a_performance)
   end
-  result += "Amount owed is #{format.call(total_amount / 100)}\n"
+  result += "Amount owed is #{usd.call(total_amount)}\n"
   result += "You earned #{volume_credits} credits\n"
   result
 end
