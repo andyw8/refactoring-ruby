@@ -7,19 +7,19 @@ def statement(invoice, plays)
   format = Intl::NumberFormat.new("en-US",
                                   style: "currency", currency: "USD",
                                   minimum_fraction_digits: 2).format
-  amount_for = lambda do |perf, play; result|
+  amount_for = lambda do |a_performance, play; result|
     case play["type"]
     when "tragedy"
       result = 40_000
-      if perf["audience"] > 30
-        result += 1000 * (perf["audience"] - 30)
+      if a_performance["audience"] > 30
+        result += 1000 * (a_performance["audience"] - 30)
       end
     when "comedy"
       result = 30_000
-      if perf["audience"] > 20
-        result += 10_000 + 500 * (perf["audience"] - 20)
+      if a_performance["audience"] > 20
+        result += 10_000 + 500 * (a_performance["audience"] - 20)
       end
-      result += 300 * perf["audience"]
+      result += 300 * a_performance["audience"]
     else
       raise "unknown type: #{play["type"]}"
     end
