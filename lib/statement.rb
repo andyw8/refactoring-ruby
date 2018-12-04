@@ -32,8 +32,6 @@ def statement(invoice, plays)
   end
 
   invoice["performances"].each do |a_performance|
-    this_amount = amount_for.call(a_performance)
-
     # add volume credits
     volume_credits += [a_performance["audience"] - 30, 0].max
     # add extra credit for every ten comedy attendees
@@ -42,8 +40,8 @@ def statement(invoice, plays)
     end
 
     # print line for this order
-    result += "  #{play_for.call(a_performance)["name"]}: #{format.call(this_amount / 100)} (#{a_performance["audience"]} seats)\n"
-    total_amount += this_amount
+    result += "  #{play_for.call(a_performance)["name"]}: #{format.call(amount_for.call(a_performance) / 100)} (#{a_performance["audience"]} seats)\n"
+    total_amount += amount_for.call(a_performance)
   end
   result += "Amount owed is #{format.call(total_amount / 100)}\n"
   result += "You earned #{volume_credits} credits\n"
