@@ -31,13 +31,17 @@ def statement(invoice, plays)
     result
   end
 
-  invoice["performances"].each do |a_performance|
-    # add volume credits
-    volume_credits += [a_performance["audience"] - 30, 0].max
-    # add extra credit for every ten comedy attendees
-    if "comedy" == play_for.call(a_performance)["type"]
-      volume_credits += (a_performance["audience"] / 5).floor
+  volume_credits_for = lambda do |perf|
+    volume_credits = 0
+    volume_credits += [perf["audience"] - 30, 0].max
+    if "comedy" == play_for.call(perf)["type"]
+      volume_credits += (perf["audience"] / 5).floor
     end
+    volume_credits
+  end
+
+  invoice["performances"].each do |a_performance|
+    volume_credits += volume_credits_for.call(a_performance)
 
     # print line for this order
     result += "  #{play_for.call(a_performance)["name"]}: #{format.call(amount_for.call(a_performance) / 100)} (#{a_performance["audience"]} seats)\n"
