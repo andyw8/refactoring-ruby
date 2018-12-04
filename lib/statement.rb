@@ -26,8 +26,12 @@ def statement(invoice, plays)
     result
   end
 
+  play_for = lambda do |a_performance|
+    plays[a_performance["playID"]]
+  end
+
   invoice["performances"].each do |a_performance|
-    play = plays[a_performance["playID"]]
+    play = play_for.call(a_performance)
     this_amount = amount_for.call(a_performance, play)
 
     # add volume credits
