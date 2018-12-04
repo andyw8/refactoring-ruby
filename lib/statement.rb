@@ -26,19 +26,19 @@ def statement(invoice, plays)
     result
   end
 
-  invoice["performances"].each do |perf|
-    play = plays[perf["playID"]]
-    this_amount = amount_for.call(perf, play)
+  invoice["performances"].each do |a_performance|
+    play = plays[a_performance["playID"]]
+    this_amount = amount_for.call(a_performance, play)
 
     # add volume credits
-    volume_credits += [perf["audience"] - 30, 0].max
+    volume_credits += [a_performance["audience"] - 30, 0].max
     # add extra credit for every ten comedy attendees
     if "comedy" == play["type"]
-      volume_credits += (perf["audience"] / 5).floor
+      volume_credits += (a_performance["audience"] / 5).floor
     end
 
     # print line for this order
-    result += "  #{play["name"]}: #{format.call(this_amount / 100)} (#{perf["audience"]} seats)\n"
+    result += "  #{play["name"]}: #{format.call(this_amount / 100)} (#{a_performance["audience"]} seats)\n"
     total_amount += this_amount
   end
   result += "Amount owed is #{format.call(total_amount / 100)}\n"
