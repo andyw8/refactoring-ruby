@@ -2,7 +2,6 @@ require "intl/number_format"
 
 def statement(invoice, plays)
   total_amount = 0
-  volume_credits = 0
   result = "Statement for #{invoice["customer"]}\n"
 
   play_for = lambda do |a_performance|
@@ -49,6 +48,7 @@ def statement(invoice, plays)
     total_amount += amount_for.call(a_performance)
   end
 
+  volume_credits = 0
   invoice["performances"].each do |a_performance|
     volume_credits += volume_credits_for.call(a_performance)
   end
