@@ -44,12 +44,15 @@ def statement(invoice, plays)
   end
 
   invoice["performances"].each do |a_performance|
-    volume_credits += volume_credits_for.call(a_performance)
-
     # print line for this order
     result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
     total_amount += amount_for.call(a_performance)
   end
+
+  invoice["performances"].each do |a_performance|
+    volume_credits += volume_credits_for.call(a_performance)
+  end
+
   result += "Amount owed is #{usd.call(total_amount)}\n"
   result += "You earned #{volume_credits} credits\n"
   result
