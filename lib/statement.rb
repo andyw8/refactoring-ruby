@@ -48,11 +48,15 @@ def statement(invoice, plays)
     total_amount += amount_for.call(a_performance)
   end
 
-  volume_credits = 0
-  invoice["performances"].each do |a_performance|
-    volume_credits += volume_credits_for.call(a_performance)
+  total_volume_credits = lambda do
+    volume_credits = 0
+    invoice["performances"].each do |a_performance|
+      volume_credits += volume_credits_for.call(a_performance)
+    end
+    volume_credits
   end
 
+  volume_credits = total_volume_credits.call
   result += "Amount owed is #{usd.call(total_amount)}\n"
   result += "You earned #{volume_credits} credits\n"
   result
