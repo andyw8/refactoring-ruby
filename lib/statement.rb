@@ -56,8 +56,7 @@ def statement(invoice, plays)
     volume_credits
   end
 
-  volume_credits = total_volume_credits.call
   result += "Amount owed is #{usd.call(total_amount)}\n"
-  result += "You earned #{volume_credits} credits\n"
+  result += "You earned #{total_volume_credits.call} credits\n"
   result
 end
