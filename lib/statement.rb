@@ -1,7 +1,6 @@
 require "intl/number_format"
 
 def statement(invoice, plays)
-  total_amount = 0
   result = "Statement for #{invoice["customer"]}\n"
 
   play_for = lambda do |a_performance|
@@ -42,6 +41,7 @@ def statement(invoice, plays)
                            minimum_fraction_digits: 2).format.call(a_number / 100)
   end
 
+  total_amount = 0
   invoice["performances"].each do |a_performance|
     # print line for this order
     result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
