@@ -55,7 +55,7 @@ def statement(invoice, plays)
     volume_credits
   end
 
-  render_plain_text = lambda do |invoice, plays|
+  render_plain_text = lambda do |data, invoice, plays|
     result = "Statement for #{invoice["customer"]}\n"
 
     invoice["performances"].each do |a_performance|
@@ -68,5 +68,6 @@ def statement(invoice, plays)
     result
   end
 
-  render_plain_text.call(invoice, plays)
+  statement_data = {}
+  render_plain_text.call(statement_data, invoice, plays)
 end
