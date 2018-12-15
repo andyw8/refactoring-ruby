@@ -46,12 +46,12 @@ def statement(invoice, plays)
     result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
   end
 
-  apple_sauce = lambda do
-    total_amount = 0
+  total_amount = lambda do
+    result = 0
     invoice["performances"].each do |a_performance|
-      total_amount += amount_for.call(a_performance)
+      result += amount_for.call(a_performance)
     end
-    total_amount
+    result
   end
 
   total_volume_credits = lambda do
@@ -62,7 +62,7 @@ def statement(invoice, plays)
     volume_credits
   end
 
-  result += "Amount owed is #{usd.call(apple_sauce.call)}\n"
+  result += "Amount owed is #{usd.call(total_amount.call)}\n"
   result += "You earned #{total_volume_credits.call} credits\n"
   result
 end
