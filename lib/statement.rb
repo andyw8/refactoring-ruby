@@ -55,14 +55,18 @@ def statement(invoice, plays)
     volume_credits
   end
 
-  result = "Statement for #{invoice["customer"]}\n"
+  render_plain_text = lambda do |invoice, plays|
+    result = "Statement for #{invoice["customer"]}\n"
 
-  invoice["performances"].each do |a_performance|
-    # print line for this order
-    result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
+    invoice["performances"].each do |a_performance|
+      # print line for this order
+      result += "  #{play_for.call(a_performance)["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
+    end
+
+    result += "Amount owed is #{usd.call(total_amount.call)}\n"
+    result += "You earned #{total_volume_credits.call} credits\n"
+    result
   end
 
-  result += "Amount owed is #{usd.call(total_amount.call)}\n"
-  result += "You earned #{total_volume_credits.call} credits\n"
-  result
+  render_plain_text.call(invoice, plays)
 end
