@@ -60,7 +60,7 @@ def statement(invoice, plays)
 
     data["performances"].each do |a_performance|
       # print line for this order
-      result += "  #{a_performance["play"]["name"]}: #{usd.call(amount_for.call(a_performance))} (#{a_performance["audience"]} seats)\n"
+      result += "  #{a_performance["play"]["name"]}: #{usd.call(a_performance["amount"])} (#{a_performance["audience"]} seats)\n"
     end
 
     result += "Amount owed is #{usd.call(total_amount.call)}\n"
@@ -71,6 +71,7 @@ def statement(invoice, plays)
   enrich_performance = lambda do |a_performance|
     a_performance.dup.tap do |result|
       result["play"] = play_for.call(result)
+      result["amount"] = amount_for.call(result)
     end
   end
 
