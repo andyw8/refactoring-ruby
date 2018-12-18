@@ -39,18 +39,18 @@ def statement(invoice, plays)
     volume_credits
   end
 
-  total_amount = lambda do
+  total_amount = lambda do |data|
     result = 0
-    invoice["performances"].each do |a_performance|
+    data["performances"].each do |a_performance|
       result += amount_for.call(a_performance)
     end
     result
   end
 
-  total_volume_credits = lambda do
+  total_volume_credits = lambda do |data|
     volume_credits = 0
-    invoice["performances"].each do |a_performance|
-      volume_credits += volume_credits_for.call(a_performance)
+    data["performances"].each do |a_performance|
+      volume_credits += a_performance["volume_credits"]
     end
     volume_credits
   end
@@ -63,20 +63,24 @@ def statement(invoice, plays)
       result += "  #{a_performance["play"]["name"]}: #{usd.call(a_performance["amount"])} (#{a_performance["audience"]} seats)\n"
     end
 
-    result += "Amount owed is #{usd.call(total_amount.call)}\n"
-    result += "You earned #{total_volume_credits.call} credits\n"
+    result += "Amount owed is #{usd.call(data["total_amount"])}\n"
+    result += "You earned #{data["total_volume_credits"]} credits\n"
     result
   end
 
   enrich_performance = lambda do |a_performance|
     a_performance.merge(
       "play" => play_for.call(a_performance),
-      "amount" => amount_for.call(a_performance)
+      "amount" => amount_for.call(a_performance),
+      "volume_credits" => volume_credits_for.call(a_performance)
     )
   end
 
   statement_data = {}
   statement_data['customer'] = invoice["customer"]
   statement_data['performances'] = invoice["performances"].map(&enrich_performance)
+  statement_data['total_amount'] = total_amount.call(statement_data)
+  statement_data['total_volume_credits'] = total_volume_credits.call(statement_data)
+
   render_plain_text.call(statement_data, plays)
 end
