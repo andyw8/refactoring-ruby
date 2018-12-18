@@ -69,10 +69,10 @@ def statement(invoice, plays)
   end
 
   enrich_performance = lambda do |a_performance|
-    a_performance.dup.tap do |result|
-      result["play"] = play_for.call(result)
-      result["amount"] = amount_for.call(result)
-    end
+    a_performance.merge(
+      "play" => play_for.call(a_performance),
+      "amount" => amount_for.call(a_performance)
+    )
   end
 
   statement_data = {}
