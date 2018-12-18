@@ -40,19 +40,15 @@ def statement(invoice, plays)
   end
 
   total_amount = lambda do |data|
-    result = 0
-    data["performances"].each do |a_performance|
-      result += amount_for.call(a_performance)
+    data["performances"].inject(0) do |total, a_performance|
+      total += amount_for.call(a_performance)
     end
-    result
   end
 
   total_volume_credits = lambda do |data|
-    volume_credits = 0
-    data["performances"].each do |a_performance|
-      volume_credits += a_performance["volume_credits"]
+    data["performances"].inject(0) do |total, a_performance|
+      total += a_performance["volume_credits"]
     end
-    volume_credits
   end
 
   render_plain_text = lambda do |data, plays|
