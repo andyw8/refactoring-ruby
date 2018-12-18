@@ -72,11 +72,14 @@ def statement(invoice, plays)
     )
   end
 
-  statement_data = {}
-  statement_data['customer'] = invoice["customer"]
-  statement_data['performances'] = invoice["performances"].map(&enrich_performance)
-  statement_data['total_amount'] = total_amount.call(statement_data)
-  statement_data['total_volume_credits'] = total_volume_credits.call(statement_data)
+  create_statement_data = lambda do |invoice|
+    statement_data = {}
+    statement_data['customer'] = invoice["customer"]
+    statement_data['performances'] = invoice["performances"].map(&enrich_performance)
+    statement_data['total_amount'] = total_amount.call(statement_data)
+    statement_data['total_volume_credits'] = total_volume_credits.call(statement_data)
+    statement_data
+  end
 
-  render_plain_text.call(statement_data, plays)
+  render_plain_text.call(create_statement_data.call(invoice), plays)
 end
