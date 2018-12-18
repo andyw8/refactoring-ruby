@@ -5,7 +5,6 @@ def statement(invoice, plays)
   render_plain_text(create_statement_data(invoice, plays))
 end
 
-
 def render_plain_text(data)
   result = "Statement for #{data["customer"]}\n"
 

@@ -51,10 +51,10 @@ def create_statement_data(invoice, plays)
     )
   end
 
-  statement_data = {}
-  statement_data['customer'] = invoice["customer"]
-  statement_data['performances'] = invoice["performances"].map(&enrich_performance)
-  statement_data['total_amount'] = total_amount.call(statement_data)
-  statement_data['total_volume_credits'] = total_volume_credits.call(statement_data)
-  statement_data
+  result = {}
+  result['customer'] = invoice["customer"]
+  result['performances'] = invoice["performances"].map(&enrich_performance)
+  result['total_amount'] = total_amount.call(result)
+  result['total_volume_credits'] = total_volume_credits.call(result)
+  result
 end
