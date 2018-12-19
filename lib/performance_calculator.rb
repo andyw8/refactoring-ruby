@@ -1,4 +1,15 @@
 class PerformanceCalculator
+  def self.for(performance, play)
+    case play["type"]
+    when "tragedy"
+      TragedyCalculator.new(performance, play)
+    when "comedy"
+      ComedyCalculator.new(performance, play)
+    else
+      raise "unknown type: #{play["type"]}"
+    end
+  end
+
   def initialize(performance, play)
     @a_performance = performance
     @play = play
@@ -34,4 +45,10 @@ class PerformanceCalculator
     end
     result
   end
+end
+
+class TragedyCalculator < PerformanceCalculator
+end
+
+class ComedyCalculator < PerformanceCalculator
 end

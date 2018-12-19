@@ -7,7 +7,7 @@ def create_statement_data(invoice, plays)
   end
 
   amount_for = lambda do |a_performance|
-    PerformanceCalculator.new(a_performance, play_for.call(a_performance)).amount
+    PerformanceCalculator.for(a_performance, play_for.call(a_performance)).amount
   end
 
   total_amount = lambda do |data|
@@ -23,7 +23,7 @@ def create_statement_data(invoice, plays)
   end
 
   enrich_performance = lambda do |a_performance|
-    calculator = PerformanceCalculator.new(a_performance, play_for.call(a_performance))
+    calculator = PerformanceCalculator.for(a_performance, play_for.call(a_performance))
     a_performance.merge(
       "play" => calculator.play,
       "amount" => calculator.amount,
