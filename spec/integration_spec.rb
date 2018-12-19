@@ -26,7 +26,7 @@ RSpec.describe "#html_statement" do
     plays = JSON.parse(File.read("data/plays.json"))
     invoices = JSON.parse(File.read("data/invoices.json"))
 
-    result = statement(invoices.first, plays)
+    result = html_statement(invoices.first, plays)
 
     expect(result).to eq(
       <<~STATEMENT
@@ -37,7 +37,7 @@ RSpec.describe "#html_statement" do
           <tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>
           <tr><td>Othello</td><td>40</td><td>$500.00</td></tr>
         </table>
-        <p>Amount owed is <em>$1,730.00</em>
+        <p>Amount owed is <em>$1,730.00</em></p>
         <p>You earned <em>47</em> credits</p>
       STATEMENT
     )
