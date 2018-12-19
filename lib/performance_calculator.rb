@@ -25,4 +25,13 @@ class PerformanceCalculator
     end
     result
   end
+
+  def volume_credits
+    result = 0
+    result += [a_performance["audience"] - 30, 0].max
+    if "comedy" == play["type"]
+      result += (a_performance["audience"] / 5).floor
+    end
+    result
+  end
 end
