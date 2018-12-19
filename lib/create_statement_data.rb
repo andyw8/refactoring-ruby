@@ -1,6 +1,7 @@
 require "performance_calculator"
 
 def create_statement_data(invoice, plays)
+
   play_for = lambda do |a_performance|
     plays[a_performance["playID"]]
   end
@@ -49,7 +50,7 @@ def create_statement_data(invoice, plays)
     calculator = PerformanceCalculator.new(a_performance, play_for.call(a_performance))
     a_performance.merge(
       "play" => calculator.play,
-      "amount" => amount_for.call(a_performance),
+      "amount" => calculator.amount,
       "volume_credits" => volume_credits_for.call(a_performance)
     )
   end
