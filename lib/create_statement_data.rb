@@ -6,23 +6,8 @@ def create_statement_data(invoice, plays)
     plays[a_performance["playID"]]
   end
 
-  amount_for = lambda do |a_performance; result|
-    case play_for.call(a_performance)["type"]
-    when "tragedy"
-      result = 40_000
-      if a_performance["audience"] > 30
-        result += 1000 * (a_performance["audience"] - 30)
-      end
-    when "comedy"
-      result = 30_000
-      if a_performance["audience"] > 20
-        result += 10_000 + 500 * (a_performance["audience"] - 20)
-      end
-      result += 300 * a_performance["audience"]
-    else
-      raise "unknown type: #{play["type"]}"
-    end
-    result
+  amount_for = lambda do |a_performance|
+    PerformanceCalculator.new(a_performance, play_for.call(a_performance)).amount
   end
 
   volume_credits_for = lambda do |a_performance|
